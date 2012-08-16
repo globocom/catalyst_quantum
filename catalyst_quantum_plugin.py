@@ -14,52 +14,24 @@
 #    under the License.
 # @author: Marco Sinhorel, globo.com
 
-"""
-v2 Quantum Plug-in API specification.
+import logging
 
-QuantumPluginBase provides the definition of minimum set of
-methods that needs to be implemented by a v2 Quantum Plug-in.
-"""
+from quantum.db import api as db
 
-from abc import ABCMeta, abstractmethod
+from quantum.openstack.common import importutils
 
-
-class QuantumPluginBaseV2(object):
-
-    __metaclass__ = ABCMeta
-
+class CatalystQuantumPlugin(QuantumDbPluginV2):
     @abstractmethod
     def create_subnet(self, context, subnet):
-        """
-        Create a subnet, which represents a range of IP addresses
-        that can be allocated to devices
-        : param subnet_data: data describing the prefix
-          {
-            "network_id": UUID of the network to which this subnet
-                          is bound.
-            "ip_version": integer indicating IP protocol version.
-                          example: 4
-            "cidr": string indicating IP prefix indicating addresses
-                    that can be allocated for devices on this subnet.
-                    example: "10.0.0.0/24"
-            "gateway_ip": string indicating the default gateway
-                          for devices on this subnet. example: "10.0.0.1"
-            "dns_nameservers": list of strings stricting indication the
-                               DNS name servers for devices on this
-                               subnet.  example: [ "8.8.8.8", "8.8.4.4" ]
-            "reserved_ranges" : list of dicts indicating pairs of IPs that
-                                should not be automatically allocated from
-                                the prefix.
-                                example: [ { "start" : "10.0.0.2",
-                                             "end" : "10.0.0.5" } ]
-            "additional_host_routes": list of dicts indicating routes beyond
-                                 the default gateway and local prefix route
-                                 that should be injected into the device.
-                                 example: [{"destination": "192.168.0.0/16",
-                                              "nexthop": "10.0.0.5" } ]
-          }
-        """
-        pass
+        LOG.debug("CatalystQuantumPlugin:create_subnet() called\n")
+        new_subnet = super(CatalystQuantumPlugin, self).create_subnet(context, subnet)
+        try:
+            self._invoke_device_plugins(self._func_name(), [context,
+                                                            new_subnet])
+            return new_subnet
+        except:
+            super(PluginV2, self).delete_subnet(context, new_subnet['id'])
+            raise
 
     @abstractmethod
     def update_subnet(self, context, id, subnet):
