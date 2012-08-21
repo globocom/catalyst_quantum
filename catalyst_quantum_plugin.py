@@ -20,9 +20,15 @@ from quantum.db import api as db
 
 from quantum.openstack.common import importutils
 
+from quantum.db.db_base_plugin_v2 import QuantumDbPluginV2
+
+from abc import abstractmethod
+
 class CatalystQuantumPlugin(QuantumDbPluginV2):
-    @abstractmethod
     def create_subnet(self, context, subnet):
+
+        '''
+
         LOG.debug("CatalystQuantumPlugin:create_subnet() called\n")
         new_subnet = super(CatalystQuantumPlugin, self).create_subnet(context, subnet)
         try:
@@ -32,24 +38,21 @@ class CatalystQuantumPlugin(QuantumDbPluginV2):
         except:
             super(PluginV2, self).delete_subnet(context, new_subnet['id'])
             raise
+            '''
+        pass
 
-    @abstractmethod
     def update_subnet(self, context, id, subnet):
         pass
 
-    @abstractmethod
     def get_subnet(self, context, id, fields=None, verbose=None):
         pass
 
-    @abstractmethod
     def delete_subnet(self, context, id):
         pass
 
-    @abstractmethod
     def get_subnets(self, context, filters=None, fields=None, verbose=None):
         pass
 
-    @abstractmethod
     def create_network(self, context, network):
         """
         Creates a new Virtual Network, assigns a name and associates
@@ -68,23 +71,18 @@ class CatalystQuantumPlugin(QuantumDbPluginV2):
         """
         pass
 
-    @abstractmethod
     def update_network(self, context, id, network):
         pass
 
-    @abstractmethod
     def delete_network(self, context, id):
         pass
 
-    @abstractmethod
     def get_network(self, context, id, fields=None, verbose=None):
         pass
 
-    @abstractmethod
     def get_networks(self, context, filters=None, fields=None, verbose=None):
         pass
 
-    @abstractmethod
     def create_port(self, context, port):
         """
         Creates a port on the specified Virtual Network. Optionally
@@ -125,7 +123,6 @@ class CatalystQuantumPlugin(QuantumDbPluginV2):
         """
         pass
 
-    @abstractmethod
     def update_port(self, context, id, port):
         """
         Updates the attributes of a specific port on the
@@ -141,7 +138,6 @@ class CatalystQuantumPlugin(QuantumDbPluginV2):
         """
         pass
 
-    @abstractmethod
     def delete_port(self, context, id):
         """
         Deletes a port on a specified Virtual Network,
@@ -159,10 +155,8 @@ class CatalystQuantumPlugin(QuantumDbPluginV2):
         """
         pass
 
-    @abstractmethod
     def get_port(self, context, id, fields=None, verbose=None):
         pass
 
-    @abstractmethod
     def get_ports(self, context, filters=None, fields=None, verbose=None):
         pass
