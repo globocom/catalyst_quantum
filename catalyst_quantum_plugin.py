@@ -24,21 +24,20 @@ from quantum.db.db_base_plugin_v2 import QuantumDbPluginV2
 
 from abc import abstractmethod
 
-class CatalystQuantumPlugin(QuantumDbPluginV2):
+class CatalystQuantumPluginV2(QuantumDbPluginV2):
     def create_subnet(self, context, subnet):
-
         '''
 
-        LOG.debug("CatalystQuantumPlugin:create_subnet() called\n")
-        new_subnet = super(CatalystQuantumPlugin, self).create_subnet(context, subnet)
+        LOG.debug("CatalystQuantumPluginV2:create_subnet() called\n")
+        new_subnet = super(CatalystQuantumPluginV2, self).create_subnet(context, subnet)
         try:
             self._invoke_device_plugins(self._func_name(), [context,
                                                             new_subnet])
             return new_subnet
         except:
-            super(PluginV2, self).delete_subnet(context, new_subnet['id'])
+            super(CatalystQuantumPluginV2, self).delete_subnet(context, new_subnet['id'])
             raise
-            '''
+        '''
         pass
 
     def update_subnet(self, context, id, subnet):
