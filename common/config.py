@@ -9,3 +9,5 @@ database_opts = [
 
 
 cfg.CONF.register_opts(database_opts, "DATABASE")
+
+CONF = cfg.CONF

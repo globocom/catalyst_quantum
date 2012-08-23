@@ -1,68 +1,28 @@
-from unittest import TestCase
 from quantum.tests.unit import test_db_plugin
+from catalyst_quantum.common import config
 
 
 class CatalystPluginTestBase(object):
-    pass
+    def setUp(self):
+        # Make sure at each test a new instance of the plugin is returned
+        test_db_plugin.QuantumManager._instance = None
+
+        self._tenant_id = 'test-tenant'
+
+        json_deserializer = test_db_plugin.JSONDeserializer()
+        self._deserializers = {
+            'application/json': json_deserializer,
+        }
+
+        plugin = 'catalyst_quantum.catalyst_quantum_plugin.CatalystQuantumPluginV2'
+        config.CONF.set_override('core_plugin', plugin)
+        self.api = test_db_plugin.APIRouter()
+        self._skip_native_bulk = False
 
 
 class TestNetworksV2(CatalystPluginTestBase, test_db_plugin.TestNetworksV2):
     pass
 
 
-
-class SubnetTestCase(TestCase):
-
-    def test_create_subnet(self):
-        pass
-
-    def test_create_subnet_with_unsuficient_params(self):
-        pass
-
-    def test_update_subnet(self):
-        pass
-
-    def test_delete_subnet(self):
-        pass
-
-    def test_get_subnet(self):
-        pass
-
-    def test_get_subnets(self):
-        pass
-
-
-class NetworkTestCase(TestCase):
-
-    def test_create_network(self):
-        pass
-
-    def test_update_network(self):
-        pass
-
-    def test_delete_network(self):
-        pass
-
-    def test_get_network(self):
-        pass
-
-    def test_get_networks(self):
-        pass
-
-
-class PortTestCase(TestCase):
-
-    def test_create_port(self):
-        pass
-
-    def test_update_port(self):
-        pass
-
-    def test_delete_port(self):
-        pass
-
-    def test_get_port(self):
-        pass
-
-    def test_get_ports(self):
-        pass
+class TestPortsV2(CatalystPluginTestBase, test_db_plugin.TestPortsV2):
+    pass

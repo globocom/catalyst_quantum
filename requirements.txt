@@ -1,2 +1,2 @@
 nose
-git+git://github.com/openstack/quantum.git
+#git+git://github.com/openstack/quantum.git
