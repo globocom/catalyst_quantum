@@ -1,4 +1,14 @@
 from unittest import TestCase
+from quantum.tests.unit import test_db_plugin
+
+
+class CatalystPluginTestBase(object):
+    pass
+
+
+class TestNetworksV2(CatalystPluginTestBase, test_db_plugin.TestNetworksV2):
+    pass
+
 
 
 class SubnetTestCase(TestCase):
