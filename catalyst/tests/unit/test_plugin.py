@@ -1,5 +1,5 @@
 from quantum.tests.unit import test_db_plugin
-from catalyst_quantum.common import config
+from catalyst.common import config
 
 
 class CatalystPluginTestBase(object):
@@ -14,7 +14,7 @@ class CatalystPluginTestBase(object):
             'application/json': json_deserializer,
         }
 
-        plugin = 'catalyst_quantum.catalyst_quantum_plugin.CatalystQuantumPluginV2'
+        plugin = 'catalyst.plugin.CatalystPluginV2'
         config.CONF.set_override('core_plugin', plugin)
         self.api = test_db_plugin.APIRouter()
         self._skip_native_bulk = False
